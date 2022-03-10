@@ -49,6 +49,8 @@ It's features are identical to the other renderers that I use live, so if your c
 it should run on the matrix as well. I tested this renderer on multiple computers on macOS and Windows and
 worked just fine, though it may not render perfectly smoothly in the terminal depending on the speed
 of your computer.
+The renderer is pretty basic, only shows which pixels are on and off, no colours or brightness, unfortunately
+you'll have to trust the technology on that one :(
 
 # Submitting your code
 - Any additional requirements/libraries your code needs, please include in the `requirement.txt`
