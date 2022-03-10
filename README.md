@@ -54,7 +54,7 @@ you'll have to trust the technology on that one :(
 
 # Submitting your code
 - Any additional requirements/libraries your code needs, please include in the `requirement.txt`
-- Create a pull request with your code
+- Create a pull request with your code or just send your files and the requirements over to me.
 - Make the result pretty, not your code, this is not a coder dick weaving, you need to impress
 the non-coders! :)
 - Please submit your code an hour before the kickoff at latest, so I have time to deploy, test and
