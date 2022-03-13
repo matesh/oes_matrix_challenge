@@ -79,7 +79,7 @@ def render_text(text, render_pipe_input, text_colour):
     draw.text((0, -1), text, font=font)  # render the text to the bitmap
     column = 0
     while column + 17 < size[0]:
-        start = time.time()
+        start = time.time() + 0.05
         render_pixels = []
         for index, column_to_render in enumerate(range(column, column + 17)):
             for row_to_render in range(2, size[1]):
@@ -88,6 +88,7 @@ def render_text(text, render_pipe_input, text_colour):
                 else:
                     render_pixels.append(Pixel(get_pixel_index(index, row_to_render-1), text_colour))
         render_pipe_input.send(render_pixels)
+        print(render_pixels)
         if column == 0:
             time.sleep(.5)
         else:
