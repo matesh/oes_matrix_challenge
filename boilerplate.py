@@ -40,65 +40,37 @@ if __name__ == "__main__":
     renderer, render_pipe, terminate_renderer, renderer_terminated = initialise_renderer(render_delay=2)
 
     try:
-
-        # Putting a single red pixel on the LED matrix using x, y coordinates
-        # Defining the red colour
-        colour = Colour(0xFF, 0x00, 0x00)
-
-        # Defining the coordinates of the pixel. The top left pixel of the matrix is 0,0 and
-        # currently it has 17 rows and 17 columns (rows 0-16 and columns 0-16)
-        x = 3
-        y = 13
-
-        # Defining the actual pixel
-        pixel = Pixel(get_pixel_index(x, y), colour)
-
-        # Defining a frame, which is a list of  pixels.
-        # A frame (list of pixels) is the unit that can be rendered.
-        frame = [pixel]
-
-        # Send the frame for rendering
-        render_pipe.send(frame)
-
-        # Draw two rectangles and wait 3s. Shows that putting a new frame in the render pipe doesn't
-        # clear the empty pixels in the new frame
-        render_pipe.send(draw_rectangle(3, 3, 5, 8, dim(COLOUR, BRIGHTNESS)))
-        render_pipe.send(draw_rectangle(9, 9, 3, 6, dim(COLOUR, BRIGHTNESS), fill=True))
-        time.sleep(3)
-
-        # Clearing matrix by putting the pre-defined CLEAR_FRAME into the render pipe
-        render_pipe.send(CLEAR_FRAME)
-
-        # Render the text "Hello world" on the board
-        render_text("Hello world", render_pipe, dim(COLOUR, BRIGHTNESS))
+        # Render the text "Odyssey" on the board
+        render_text("Odyssey", render_pipe, dim(COLOUR, BRIGHTNESS))
         time.sleep(1)
 
         # Clearing matrix by putting the pre-defined CLEAR_FRAME into the render pipe
         render_pipe.send(CLEAR_FRAME)
 
-        # Continuously running random pixel pattern thing
-        active_pixels = []
-        MAX_ACTIVE_PIXELS = 50
+        # Defining Odyssey orange
+        oes_orange = Colour(0xE7, 0x59, 0x25)
+        oes_red = Colour(0xBE, 0x3A, 0x26)
 
-        counter = 0
-        while not shutdown:
-            start = time.time()
-            pixels_to_render = []
-            pixel = get_random_pixel()
-            while pixel in active_pixels:
-                pixel = get_random_pixel()
-            active_pixels.append(pixel)
-            pixels_to_render.append(Pixel(pixel, dim(COLOUR, BRIGHTNESS)))
-            if MAX_ACTIVE_PIXELS < len(active_pixels):
-                turn_off_pixel = active_pixels.pop(0)
-                pixels_to_render.append(Pixel(turn_off_pixel, Colour(0x00, 0x00, 0x00)))
-            render_pipe.send(pixels_to_render)
+        oes_orange_xs = [0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,7,7,7,7,7,7,7,8,8,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,12,13,13,13,13,14,14]
+        oes_orange_ys = [6,7,8,9,10,4,5,6,7,8,9,10,11,12,3,4,5,6,7,8,9,10,11,12,13,2,3,4,7,8,9,12,13,14,1,2,3,7,8,9,13,14,15,0,1,2,7,8,9,14,15,16,0,1,7,8,9,15,16,0,1,7,8,9,15,16,0,1,8,9,15,16,0,1,15,16,0,1,15,16,0,1,2,14,15,16,1,2,3,13,14,15,2,3,13,14,3,13]
 
-            # Recommended wait between frame renders to maintain a stable FPS and allow overruns
-            try:
-                time.sleep(FRAME_TIME - (time.time() - start))
-            except Exception:
-                pass
+        oes_red_xs = [13,13,13,13,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,16,16,16,16,16]
+        oes_red_ys = [4,5,11,12,4,5,6,7,9,10,11,12,4,5,6,7,8,9,10,11,12,6,7,8,9,10]
+
+        frame = []
+
+        for i in range(len(oes_orange_xs)):
+            pixel = Pixel(get_pixel_index(oes_orange_xs[i], oes_orange_ys[i]), oes_orange)
+            frame.append(pixel)
+
+        for i in range(len(oes_red_xs)):
+            pixel = Pixel(get_pixel_index(oes_red_xs[i], oes_red_ys[i]), oes_red)
+            frame.append(pixel)
+        
+        # Send the frame for rendering
+        render_pipe.send(frame)
+        time.sleep(5)
+        render_pipe.send(CLEAR_FRAME)
 
         print("Terminating")
         render_pipe.send(CLEAR_FRAME)
